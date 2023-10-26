@@ -1,5 +1,5 @@
-from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.decorators import login_required, redirect
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from .forms import NewItemForm, EditItemForm
 from .models import Item, Category
@@ -71,6 +71,7 @@ def edit(request, pk):
 
 @login_required
 def delete(request,pk):
+    item = get_object_or_404(Item, pk=pk, created_by=request.user)
     item.delete()
 
     return redirect('dashboard:index')
